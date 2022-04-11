@@ -4,39 +4,54 @@ using UnityEngine;
 
 public class BasicMovement : MonoBehaviour
 {
+    
     public Animator animator;
     public float speed = 5f;
     public bool right;
-
+    public Rigidbody2D rb;
+    Vector3 movement;
+    
     void Update()
     {
-        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
+        ProcessInputs();
+        Move();
+        Animate();
 
+    }
 
-       // GameObject.Destroy(footprint, 5);
+    private void ProcessInputs()
+	{
+        movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
+
+        if (movement.magnitude > 1)
+        {
+            movement.Normalize();
+        }
+    }
+
+    private void Move()
+	{
+        // transform.position += movement * Time.deltaTime;
+        rb.velocity = new Vector2(movement.x, movement.y);
+    }
+
+    private void Animate()
+	{
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Magnitude", movement.magnitude);
-
-
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-
-	
-
-        if (mousePosition.x < 0)
-		{
-
+        if (mousePosition.x < gameObject.transform.position.x)
+        {
             animator.SetBool("right", false);
         }
-        else if(mousePosition.x > 0) { 
-		
+        else if (mousePosition.x > gameObject.transform.position.x)
+        {
+
             animator.SetBool("right", true);
         }
-       
-
-        transform.position = transform.position + movement * Time.deltaTime;
-
-      
     }
+
+
 }
