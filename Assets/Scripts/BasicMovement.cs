@@ -10,29 +10,56 @@ public class BasicMovement : MonoBehaviour
     public bool right;
     public Rigidbody2D rb;
     Vector3 movement;
-    
-    void Update()
+    bool move;
+    public Footprints functions;
+	private void Start()
+	{
+         functions = GetComponent<Footprints>();
+        move = false;
+	}
+
+	void Update()
     {
+      
         ProcessInputs();
         Move();
         Animate();
 
+		if (move)
+		{
+            functions.Steps();
+		}
+	
     }
 
     private void ProcessInputs()
 	{
         movement = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
 
-        if (movement.magnitude > 1)
+        
+        if (movement.magnitude > 1 )
         {
             movement.Normalize();
-        }
+
+		}
+		
     }
 
     private void Move()
 	{
-        // transform.position += movement * Time.deltaTime;
+      
         rb.velocity = new Vector2(movement.x, movement.y);
+
+        if(rb.velocity.magnitude > 0)
+		{
+            move = true;
+
+		}
+		else
+		{
+            move = false;
+		}
+
     }
 
     private void Animate()

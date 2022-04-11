@@ -8,8 +8,7 @@ public class BulletDamage : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        EnemyHealth health = collision.gameObject.GetComponent<EnemyHealth>();
-        Debug.Log("dupa");
+        EnemyHealth health = collision.gameObject.GetComponent<EnemyHealth>();        
         if(collision.gameObject.tag == "Enemy")
 		{
             Destroy(gameObject);
